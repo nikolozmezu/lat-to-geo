@@ -1,0 +1,7 @@
+# Claude Code agent skill tooling (installed locally via `npx skills` / `npx skillfish`)
+.agents/
+.claude/
+skills-lock.json
+
+# Generated output from the design-taste-frontend skill's inspector
+.taste-skill/

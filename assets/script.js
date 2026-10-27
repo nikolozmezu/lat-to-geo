@@ -1,8 +1,12 @@
 'use strict';
-document.addEventListener("DOMContentLoaded", () => {
-    let input = document.querySelector('#input'); 
-    let output = document.querySelector('#output'); 
-    let copyButton = document.querySelector('#copy')
+document.addEventListener('DOMContentLoaded', () => {
+    const input = document.querySelector('#input');
+    const output = document.querySelector('#output');
+    const copyButton = document.querySelector('#copy');
+    const clearButton = document.querySelector('#clear');
+    const copyStatus = document.querySelector('#copy-status');
+    const charCount = document.querySelector('#char-count');
+
     const conversionMap = {
         'a' : 'ა' ,
         'b' : 'ბ' ,
@@ -37,32 +41,87 @@ document.addEventListener("DOMContentLoaded", () => {
         'x' : 'ხ',
         'j' : 'ჯ' ,
         'h' : 'ჰ' ,
-        //
-
+        // capitals that have no Georgian letter of their own fall back to their lowercase letter,
+        // so an accidental Shift or Caps Lock does not leave raw Latin text in the output
         'A' : 'ა',
         'B' : 'ბ',
-        'F' : 'ფ',
+        'D' : 'დ',
         'E' : 'ე',
+        'F' : 'ფ',
+        'G' : 'გ',
+        'H' : 'ჰ',
+        'I' : 'ი',
+        'K' : 'კ',
+        'L' : 'ლ',
         'M' : 'მ',
-        
+        'N' : 'ნ',
+        'O' : 'ო',
+        'P' : 'პ',
+        'Q' : 'ქ',
+        'U' : 'უ',
+        'V' : 'ვ',
+        'X' : 'ხ',
+        'Y' : 'ყ',
     };
+
+    const STORAGE_KEY = 'lat-to-geo:input';
+    let statusTimer = null;
+
     function converter(text) {
-        return text.replace(/./gi, match => conversionMap[match] || match);
+        return text.replace(/./g, match => conversionMap[match] || match);
     }
-    
 
-    input.addEventListener('input', function() {
-        let text = input.value;
-        let convertedText = converter(text);
-        output.textContent  = convertedText;
-    })
+    function autoGrow() {
+        input.style.height = 'auto';
+        input.style.height = input.scrollHeight + 'px';
+    }
 
-    copyButton.addEventListener('click', function() {
-        let copyText = output.textContent;
-        if(copyText.length > 0) {
-            navigator.clipboard.writeText(copyText);
+    function render() {
+        const text = input.value;
+        output.textContent = converter(text);
+        if (charCount) charCount.textContent = String(text.length);
+        autoGrow();
+    }
+
+    function showStatus(message) {
+        if (!copyStatus) return;
+        copyStatus.textContent = message;
+        copyStatus.classList.add('is-visible');
+        clearTimeout(statusTimer);
+        statusTimer = setTimeout(() => copyStatus.classList.remove('is-visible'), 1800);
+    }
+
+    input.addEventListener('input', () => {
+        render();
+        try { localStorage.setItem(STORAGE_KEY, input.value); } catch {}
+    });
+
+    copyButton.addEventListener('click', async () => {
+        const copyText = output.textContent;
+        if (!copyText.length) {
+            showStatus('დასაკოპირებელი ტექსტი არ არის');
+            return;
         }
-    })
+        try {
+            await navigator.clipboard.writeText(copyText);
+            showStatus('დაკოპირებულია');
+        } catch {
+            showStatus('კოპირება ვერ მოხერხდა — მონიშნე ტექსტი ხელით');
+        }
+    });
 
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            input.value = '';
+            render();
+            try { localStorage.removeItem(STORAGE_KEY); } catch {}
+            input.focus();
+        });
+    }
 
+    try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) input.value = saved;
+    } catch {}
+    render();
 });

@@ -7,19 +7,67 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="description" content="Convert lat into Geo characters - QWERTY">
-        <link rel="stylesheet" href="/assets/reset.css">
-        
-        <link rel="stylesheet" href="/assets/styles.css">
+        <meta name="theme-color" content="#f7f4f1">
+        <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%237a2b35'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-size='19' fill='%23f7ece9' text-anchor='middle'%3E%E1%83%90%3C/text%3E%3C/svg%3E">
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Georgian:wght@400;500;600;700&display=swap">
+
+        <link rel="stylesheet" href="assets/reset.css">
+        <link rel="stylesheet" href="assets/styles.css">
     </head>
 
     <body>
         <main>
-            <textarea id="input"></textarea>
-            <button id="copy">დააჭირე და დააკოპირე როარ იწვალო</button>
-            <div id="output"></div>
-        </main>
-        <script src="/assets/script.js"></script>
+            <header class="brand">
+                <span class="mark" aria-hidden="true">ა</span>
+                <div>
+                    <h1>Lat&nbsp;&rarr;&nbsp;ქართული</h1>
+                    <p class="lede">აკრიფე ლათინური ასოები (QWERTY განლაგებით) და მიიღე ქართული ტექსტი.</p>
+                </div>
+            </header>
 
+            <div class="panel">
+                <div class="pane">
+                    <div class="pane-head">
+                        <label for="input">ლათინური</label>
+                        <span id="char-count" class="char-count">0</span>
+                    </div>
+                    <textarea id="input" placeholder="დაწერე აქ..." spellcheck="false" autocomplete="off" autofocus rows="1"></textarea>
+                </div>
+
+                <div class="pane-divider" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1v12M3 9l5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+
+                <div class="pane">
+                    <div class="pane-head">
+                        <span class="pane-label">ქართული</span>
+                    </div>
+                    <div id="output" class="output"></div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="copy" type="button" class="primary">დააჭირე და დააკოპირე, რომ არ იწვალო</button>
+                <button id="clear" type="button" class="secondary">წაშლა</button>
+                <span id="copy-status" class="copy-status" role="status"></span>
+            </div>
+
+            <details class="legend">
+                <summary>სპეციალური ასოები (Shift)</summary>
+                <ul>
+                    <li><kbd>Shift</kbd><kbd>T</kbd><span>&rarr; თ</span></li>
+                    <li><kbd>Shift</kbd><kbd>J</kbd><span>&rarr; ჟ</span></li>
+                    <li><kbd>Shift</kbd><kbd>R</kbd><span>&rarr; ღ</span></li>
+                    <li><kbd>Shift</kbd><kbd>S</kbd><span>&rarr; შ</span></li>
+                    <li><kbd>Shift</kbd><kbd>C</kbd><span>&rarr; ჩ</span></li>
+                    <li><kbd>Shift</kbd><kbd>Z</kbd><span>&rarr; ძ</span></li>
+                    <li><kbd>Shift</kbd><kbd>W</kbd><span>&rarr; ჭ</span></li>
+                </ul>
+            </details>
+        </main>
+        <script src="assets/script.js"></script>
     </body>
 </html>
